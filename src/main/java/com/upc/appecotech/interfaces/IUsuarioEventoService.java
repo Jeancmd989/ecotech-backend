@@ -12,7 +12,6 @@ public interface IUsuarioEventoService {
     UsuarioEventoDTO buscarPorId(Long id);
     List<UsuarioEventoDTO> listarTodos();
     List<UsuarioEventoDTO> listarEventosPorUsuario(Long idUsuario);
-    // En IUsuarioEventoService.java
     List<EventoDTO> listarEventosDisponiblesParaUsuario(Long idUsuario);
     void cancelarInscripcion(Long idInscripcion);
 }

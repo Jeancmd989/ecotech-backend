@@ -18,7 +18,7 @@ public interface SuscripcionRepositorio extends JpaRepository<Suscripcion, Long>
     @Query("SELECT s FROM Suscripcion s WHERE s.idusuario.id = :idUsuario ORDER BY s.fechainicio DESC")
     List<Suscripcion> findByUsuarioId(@Param("idUsuario") Long idUsuario);
 
-    // Nuevos métodos
+
     List<Suscripcion> findByEstado(String estado);
 
     @Query("SELECT s FROM Suscripcion s WHERE s.estado = 'Activa' AND s.fechafin < :fecha")

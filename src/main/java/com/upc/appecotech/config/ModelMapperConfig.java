@@ -25,7 +25,10 @@ public class ModelMapperConfig {
         mapper.createTypeMap(Canjeusuario.class, CanjeUsuarioDTO.class)
                 .addMapping(Canjeusuario::getId, CanjeUsuarioDTO::setId)
                 .addMapping(src -> src.getIdusuario().getId(), CanjeUsuarioDTO::setIdUsuario)
-                .addMapping(src -> src.getIdproducto().getId(), CanjeUsuarioDTO::setIdProducto);
+                .addMapping(src -> src.getIdproducto().getId(), CanjeUsuarioDTO::setIdProducto)
+                .addMapping(Canjeusuario::getIdproducto, CanjeUsuarioDTO::setProducto)
+                .addMapping(Canjeusuario::getIdusuario, CanjeUsuarioDTO::setUsuario);
+
 
         // ========== FEEDBACK ==========
         mapper.createTypeMap(Feedback.class, FeedbackDTO.class)
@@ -50,7 +53,8 @@ public class ModelMapperConfig {
         // ========== DEPOSITO ==========
         mapper.createTypeMap(Deposito.class, DepositoDTO.class)
                 .addMapping(Deposito::getId, DepositoDTO::setId)
-                .addMapping(src -> src.getIdusuario().getId(), DepositoDTO::setIdUsuario);
+                .addMapping(src -> src.getIdusuario().getId(), DepositoDTO::setIdUsuario)
+                .addMapping(Deposito::getIdusuario, DepositoDTO::setUsuario);
 
         // ========== HISTORIALDEPUNTOS ==========
         mapper.createTypeMap(Historialdepunto.class, HistorialPuntosDTO.class)

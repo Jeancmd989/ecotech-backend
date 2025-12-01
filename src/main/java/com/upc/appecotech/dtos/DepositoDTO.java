@@ -22,4 +22,5 @@ public class DepositoDTO {
     private BigDecimal cantidad;
     private Integer puntosotorgados;
     private String estado;
+    private UsuarioDTO usuario;
 }

@@ -13,13 +13,11 @@ public interface CanjeUsuarioRepositorio extends JpaRepository<Canjeusuario, Lon
 
     void deleteByIdusuario_Id(Long idusuario);
 
-    // NUEVO: Buscar por usuario y estado
     List<Canjeusuario> findByIdusuarioIdAndEstadoCanje(Long idUsuario, String estadoCanje);
 
     @Query("SELECT c FROM Canjeusuario c WHERE c.idusuario.id = :idUsuario ORDER BY c.fechacanje DESC")
     List<Canjeusuario> findByUsuarioId(@Param("idUsuario") Long idUsuario);
 
-    // Nuevos métodos
     List<Canjeusuario> findByEstadoCanje(String estadoCanje);
 
     @Query("SELECT c FROM Canjeusuario c WHERE c.estadoCanje = :estado ORDER BY c.fechacanje DESC")

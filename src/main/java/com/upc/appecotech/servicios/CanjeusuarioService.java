@@ -68,7 +68,6 @@ public class CanjeusuarioService implements ICanjeusuarioService {
                 throw new RuntimeException("El producto no está disponible para canje");
             }
 
-            // ✅ Valida por el campo booleano del producto
             if ("digital".equalsIgnoreCase(canjeUsuarioDTO.getMetodoEntrega())) {
                 if (producto.getPermiteEntregaDigital() == null || !producto.getPermiteEntregaDigital()) {
                     throw new IllegalArgumentException(
@@ -77,7 +76,6 @@ public class CanjeusuarioService implements ICanjeusuarioService {
                 }
             }
 
-            // 🆕 VALIDAR DIRECCIÓN SI ES ENTREGA FÍSICA
             if ("físico".equalsIgnoreCase(canjeUsuarioDTO.getMetodoEntrega())) {
                 if (canjeUsuarioDTO.getDireccionEntrega() == null || canjeUsuarioDTO.getDireccionEntrega().trim().isEmpty()) {
                     throw new IllegalArgumentException("La dirección de entrega es obligatoria para envíos físicos");
@@ -90,18 +88,16 @@ public class CanjeusuarioService implements ICanjeusuarioService {
                 }
             }
 
-            // CALCULAR PUNTOS CON DESCUENTO DEL PLAN
+
             int puntosBaseProducto = producto.getPuntosrequerido();
             int descuentoPlan = obtenerDescuentoCanje(usuario.getId());
             int puntosConDescuento = calcularPuntosConDescuento(puntosBaseProducto, descuentoPlan);
             int puntosRequeridosTotal = puntosConDescuento * canjeUsuarioDTO.getCantidad();
 
-            // Validar con los puntos descontados
             if (!validarPuntosUsuario(usuario.getId(), puntosRequeridosTotal)) {
                 throw new RuntimeException("Puntos insuficientes para realizar el canje. Necesitas: " + puntosRequeridosTotal + " puntos");
             }
 
-            // Validar estado y método de entrega
             if (canjeUsuarioDTO.getEstadoCanje() != null && !ESTADOS_CANJE_VALIDOS.contains(canjeUsuarioDTO.getEstadoCanje().toLowerCase())) {
                 throw new IllegalArgumentException("Estado de canje inválido");
             }
@@ -119,7 +115,6 @@ public class CanjeusuarioService implements ICanjeusuarioService {
             canjeUsuario.setMetodoEntrega(canjeUsuarioDTO.getMetodoEntrega());
             canjeUsuario.setObservaciones(canjeUsuarioDTO.getObservaciones());
 
-            // 🆕 GUARDAR DIRECCIÓN DE ENTREGA
             canjeUsuario.setDireccionEntrega(canjeUsuarioDTO.getDireccionEntrega());
             canjeUsuario.setCiudad(canjeUsuarioDTO.getCiudad());
             canjeUsuario.setCodigoPostal(canjeUsuarioDTO.getCodigoPostal());
@@ -128,14 +123,13 @@ public class CanjeusuarioService implements ICanjeusuarioService {
 
             Canjeusuario guardado = canjeUsuarioRepositorio.save(canjeUsuario);
 
-            // Descontar stock del producto
+
             producto.setStock(producto.getStock() - canjeUsuarioDTO.getCantidad());
             if (producto.getStock() == 0) {
                 producto.setEstado("agotado");
             }
             productoRepositorio.save(producto);
 
-            // REGISTRAR PUNTOS DESCONTADOS
             String planUsuario = obtenerNombrePlan(usuario.getId());
             String descripcionDescuento = descuentoPlan > 0
                     ? String.format(" (-%d%% descuento %s)", descuentoPlan, planUsuario)
@@ -156,7 +150,6 @@ public class CanjeusuarioService implements ICanjeusuarioService {
 
             historialPuntosRepository.save(historial);
 
-            // 🆕 CREAR NOTIFICACIÓN DE CANJE PENDIENTE
             try {
                 notificacionService.crearNotificacionCanje(
                         usuario.getId(),
@@ -193,7 +186,6 @@ public class CanjeusuarioService implements ICanjeusuarioService {
 
                     Canjeusuario actualizado = canjeUsuarioRepositorio.save(canje);
 
-                    // 🆕 CREAR NOTIFICACIÓN SEGÚN EL NUEVO ESTADO
                     try {
                         String tipoNotificacion = "canje_" + nuevoEstado.toLowerCase();
                         String titulo = obtenerTituloNotificacion(nuevoEstado);
@@ -215,7 +207,7 @@ public class CanjeusuarioService implements ICanjeusuarioService {
                 .orElseThrow(() -> new EntityNotFoundException("Canje no encontrado con ID: " + id));
     }
 
-    // 🆕 MÉTODOS HELPER PARA NOTIFICACIONES
+
     private String obtenerTituloNotificacion(String estado) {
         return switch (estado.toLowerCase()) {
             case "aprobado" -> "¡Canje aprobado!";
@@ -234,7 +226,7 @@ public class CanjeusuarioService implements ICanjeusuarioService {
         };
     }
 
-    // ... resto de métodos sin cambios ...
+
 
     @Override
     @Transactional
@@ -258,7 +250,7 @@ public class CanjeusuarioService implements ICanjeusuarioService {
         return puntosDisponibles >= puntosRequeridos;
     }
 
-    // ✅ Valida por el campo booleano
+
     public boolean permiteEntregaDigital(Long idProducto) {
         Producto producto = productoRepositorio.findById(idProducto)
                 .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado"));

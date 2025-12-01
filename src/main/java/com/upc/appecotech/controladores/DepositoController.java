@@ -58,7 +58,6 @@ public class DepositoController {
 
 
     @PutMapping("/depositos/{id}/validar")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> validarDeposito(@PathVariable Long id, @RequestParam boolean aprobado){
         try {
             DepositoDTO validado = depositoService.validarDeposito(id, aprobado);

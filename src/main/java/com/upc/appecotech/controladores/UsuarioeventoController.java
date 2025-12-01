@@ -45,7 +45,6 @@ public class UsuarioeventoController {
     }
 
     @PutMapping("/usuario-eventos/{idUsuarioEvento}/asistencia")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> marcarAsistencia(@PathVariable Long idUsuarioEvento, @RequestParam boolean asistio) {
         try {
             UsuarioEventoDTO actualizado = usuarioEventoService.marcarAsistencia(idUsuarioEvento, asistio);

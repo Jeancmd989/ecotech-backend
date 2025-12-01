@@ -12,15 +12,13 @@ public interface ProductoRepositorio extends JpaRepository<Producto, Long> {
     List<Producto> findAllByOrderByPuntosrequeridoDesc();
     List<Producto> findByPuntosrequeridoBetween(Integer min, Integer max);
 
-
-    // Nuevos métodos para los nuevos atributos
     List<Producto> findByCategoria(String categoria);
     List<Producto> findByEstado(String estado);
     List<Producto> findByEstadoOrderByPuntosrequeridoAsc(String estado);
     List<Producto> findByStockGreaterThan(Integer stock);
     List<Producto> findByCategoriaAndEstado(String categoria, String estado);
 
-    // Consultas personalizadas
+
     @Query("SELECT p FROM Producto p WHERE p.estado = 'activo' ORDER BY p.puntosrequerido ASC")
     List<Producto> findProductosActivos();
 
@@ -33,10 +31,10 @@ public interface ProductoRepositorio extends JpaRepository<Producto, Long> {
     @Query("SELECT p FROM Producto p WHERE p.categoria = :categoria AND p.estado = 'activo' ORDER BY p.puntosrequerido ASC")
     List<Producto> findProductosActivosPorCategoria(@Param("categoria") String categoria);
 
-    // 🆕 NUEVO: Productos que permiten entrega digital
+
     List<Producto> findByPermiteEntregaDigital(Boolean permiteEntregaDigital);
 
-    // 🆕 NUEVO: Productos digitales disponibles
+
     @Query("SELECT p FROM Producto p WHERE p.permiteEntregaDigital = true AND p.estado = 'activo' AND p.stock > 0")
     List<Producto> findProductosDigitalesDisponibles();
 

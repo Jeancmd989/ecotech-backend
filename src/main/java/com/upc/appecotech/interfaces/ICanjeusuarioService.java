@@ -12,8 +12,6 @@ public interface ICanjeusuarioService {
     List<CanjeUsuarioDTO> listarTodos();
     List<CanjeUsuarioDTO> listarCanjesPorUsuario(Long idUsuario);
     int obtenerPuntosDisponibles(Long idUsuario);
-
-    // Nuevos métodos
     CanjeUsuarioDTO actualizarEstadoCanje(Long id, String nuevoEstado);
     CanjeUsuarioDTO actualizarMetodoEntrega(Long id, String nuevoMetodo);
     CanjeUsuarioDTO agregarObservaciones(Long id, String observaciones);

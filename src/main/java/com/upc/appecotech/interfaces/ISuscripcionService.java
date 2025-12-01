@@ -18,7 +18,6 @@ public interface ISuscripcionService {
     SuscripcionDTO cancelarCambioProgramado(Long idSuscripcion);
 
 
-    // Nuevos métodos para cambio de plan
     SuscripcionDTO cambiarPlan(Long idUsuario, String nuevoPlan, Long idMetodoPago);
     SuscripcionDTO cancelarSuscripcion(Long idSuscripcion);
     void procesarSuscripcionesVencidas();

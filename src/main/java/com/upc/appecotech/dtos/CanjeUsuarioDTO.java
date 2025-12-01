@@ -25,4 +25,7 @@ public class CanjeUsuarioDTO {
     private String codigoPostal;
     private String telefono;
     private String referencia;
+
+    private UsuarioDTO usuario;
+    private ProductoDTO producto;
 }

@@ -54,10 +54,10 @@ public class ReporteService {
 
         return resultados.stream()
                 .map(r -> new DepositoPorTipoDTO(
-                        (String) r[0],           // tipo
-                        ((Number) r[1]).longValue(),  // cantidad
-                        (BigDecimal) r[2],       // peso
-                        ((Number) r[3]).longValue()   // puntos
+                        (String) r[0],
+                        ((Number) r[1]).longValue(),
+                        (BigDecimal) r[2],
+                        ((Number) r[3]).longValue()
                 ))
                 .collect(Collectors.toList());
     }

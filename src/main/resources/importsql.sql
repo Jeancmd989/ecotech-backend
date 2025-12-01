@@ -29,9 +29,6 @@ INSERT INTO usuariorol (idusuario, idrol) VALUES (2, 2);
 -- Insertar métodos de pago básicos
 INSERT INTO metodopago (nombremetodo) VALUES
                                           ('Gratuito'),
-                                          ('Tarjeta de Crédito'),
-                                          ('Tarjeta de Débito'),
-                                          ('Yape'),
-                                          ('Plin'),
-                                          ('Transferencia Bancaria'),
-                                          ('PayPal');
+                                          ('Visa'),
+                                          ('Mastercard'),
+                                          ('Yape');

@@ -32,10 +32,8 @@ public class SuscripcionService implements ISuscripcionService {
     @Autowired
     private ModelMapper modelMapper;
 
-    // Planes válidos
     private static final List<String> PLANES_VALIDOS = Arrays.asList("Basico", "Premium", "VIP");
 
-    // Estados válidos
     private static final List<String> ESTADOS_VALIDOS = Arrays.asList("Activa", "Cancelada", "Vencida", "Programada");
 
     @Override
@@ -45,7 +43,6 @@ public class SuscripcionService implements ISuscripcionService {
             Usuario usuario = usuarioRepositorio.findById(suscripcionDTO.getIdusuario())
                     .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 
-            // ✅ Verificar si ya tiene una suscripción activa (EXCLUYENDO Básico)
             List<Suscripcion> suscripciones = suscripcionRepositorio.findByUsuarioId(usuario.getId());
             boolean tieneActiva = suscripciones.stream()
                     .anyMatch(s -> "Activa".equals(s.getEstado()) &&
@@ -62,12 +59,11 @@ public class SuscripcionService implements ISuscripcionService {
             Metodopago metodoPago = metodoPagoRepositorio.findById(suscripcionDTO.getIdmetodopago())
                     .orElseThrow(() -> new EntityNotFoundException("Método de pago no encontrado"));
 
-            // Validar plan
+
             if (!PLANES_VALIDOS.contains(suscripcionDTO.getTipoplan())) {
                 throw new IllegalArgumentException("Plan inválido. Debe ser: Basico, Premium o VIP");
             }
 
-            // ✅ OPCIONAL: Marcar la suscripción Básico como "Reemplazada" si existe
             suscripciones.stream()
                     .filter(s -> "Basico".equals(s.getTipoplan()) && "Activa".equals(s.getEstado()))
                     .forEach(s -> {
@@ -75,7 +71,6 @@ public class SuscripcionService implements ISuscripcionService {
                         suscripcionRepositorio.save(s);
                     });
 
-            // Crear nueva suscripción
             Suscripcion suscripcion = new Suscripcion();
             suscripcion.setIdusuario(usuario);
             suscripcion.setIdmetodopago(metodoPago);
@@ -218,7 +213,7 @@ public class SuscripcionService implements ISuscripcionService {
                     suscripcion.setFechafin(calcularFechaFin("Basico"));
                     suscripcion.setDescripcion(generarDescripcion("Basico"));
                     suscripcion.setMonto(calcularMontoPlan("Basico"));
-                    suscripcion.setEstado("Activa"); // ✅ NO "Vencida"
+                    suscripcion.setEstado("Activa");
                     asignarBeneficios(suscripcion, "Basico");
                 }
 

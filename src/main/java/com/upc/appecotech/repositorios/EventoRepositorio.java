@@ -24,13 +24,11 @@ public interface EventoRepositorio extends JpaRepository<Evento, Long> {
     List<Object[]> obtenerEventosMasParticipados(Pageable pageable);
 
 
-    // Nuevos métodos para los nuevos atributos
     List<Evento> findByEstadoEvento(String estadoEvento);
     List<Evento> findByCategoria(String categoria);
     List<Evento> findByEstadoEventoOrderByFechaAsc(String estadoEvento);
     List<Evento> findByCategoriaAndEstadoEvento(String categoria, String estadoEvento);
 
-    // Consultas personalizadas
     @Query("SELECT e FROM Evento e WHERE e.estadoEvento = 'programado' AND e.fecha >= :fechaActual ORDER BY e.fecha ASC")
     List<Evento> findEventosProgramados(@Param("fechaActual") LocalDate fechaActual);
 
@@ -46,11 +44,11 @@ public interface EventoRepositorio extends JpaRepository<Evento, Long> {
     @Query("SELECT e FROM Evento e WHERE e.categoria = :categoria AND e.estadoEvento = 'programado' AND e.fecha >= :fechaActual ORDER BY e.fecha ASC")
     List<Evento> findEventosProgramadosPorCategoria(@Param("categoria") String categoria, @Param("fechaActual") LocalDate fechaActual);
 
-    // Buscar eventos con capacidad disponible
+
     @Query("SELECT e FROM Evento e WHERE e.capacidadMaxima > 0 AND e.estadoEvento = 'programado' ORDER BY e.fecha ASC")
     List<Evento> findEventosConCapacidadDisponible();
 
-    // Contar inscritos por evento (si tienes una relación con inscripciones)
+
     @Query("SELECT COUNT(i) FROM Usuarioevento i WHERE i.idevento.id = :eventoId")
     Long contarInscritosPorEvento(@Param("eventoId") Long eventoId);
 }

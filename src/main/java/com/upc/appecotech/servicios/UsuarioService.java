@@ -202,8 +202,4 @@ public class UsuarioService implements IUsuarioService {
         usuario.setContrasena(bcrypt.encode(contrasenaNueva));
         usuarioRepositorio.save(usuario);
     }
-
-
-
-
 }
