@@ -1,1 +1,1 @@
-**Hello guys, We are team 1 of UPC del Curso de Arquitectura de Aplicaciones Web**
+**Hello guys, We are team  of UPC del Curso de Arquitectura de Aplicaciones Web**
